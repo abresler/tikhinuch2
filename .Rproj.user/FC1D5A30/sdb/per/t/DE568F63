@@ -1,0 +1,16 @@
+{
+    "contents" : "library(shiny)\nlibrary(datasets)\nlibrary(reshape2)\nrequire(rCharts)\nshinyServer(function(input, output) {\n  \n  ##################### DataBase ####################\n  pisa <- read.csv(\"data/PISA2012-10--06-2014.csv\", head=TRUE, sep=\",\")\n  \n  \n  output$valueB <- renderPrint({ input$select }) \n  output$valueC <- renderPrint({ input$checkGroup })\n  \n  ##################### Graphs ####################\n  \n  output$meanPlot <- renderChart({ \n      data <-pisa[pisa$sbj== input$select  & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c(\"grp\", \"mean\")]\n      n1 <- nPlot(\"grp\", \"mean\", data, type=\"multiBarChart\")\n      n1$set(dom = \"meanPlot\")\n      n1$chart(forceY = c(300, 600), showControls = FALSE)\n      n1$yAxis(tickFormat = \"#!  function(y) {return y.toFixed(0)} !#\")      \n      return(n1)\n                    \n  })\n            \n  output$distributionPlot <- renderChart({ \n    temp<-pisa[pisa$sbj==input$select & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c(\"grp\", \"level1c\", \"level1b\", \"level1a\", \"level2\", \"level3\", \"level4\", \"level5\", \"level6\")]\n    data<-melt(temp)\n    n2 <- nPlot(\"grp\",\"value\", group=\"variable\", data, type=\"multiBarChart\")\n    n2$set(dom = \"distributionPlot\")\n    n2$chart(stacked = TRUE)\n    n2$yAxis(tickFormat = \"#!  function(y) {return y.toFixed(0) + '%'} !#\")\n    return(n2)\n  })\n  \n  output$genderPlot <- renderChart({ \n    temp<-pisa[pisa$sbj==input$select & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c(\"grp\", \"men\", \"women\")]\n    data<-melt(temp)\n    n3 <- nPlot(\"grp\",\"value\", group=\"variable\", data, type=\"multiBarChart\")\n    n3$set(dom = \"genderPlot\")\n    n3$chart(forceY = c(300, 600), showControls = FALSE)\n    n3$yAxis(tickFormat = \"#!  function(y) {return y.toFixed(0)} !#\")\n    return(n3)\n  })\n  \n  output$socioEconomicPlot <- renderChart({ \n    temp<-pisa[pisa$sbj==input$select & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c(\"grp\", \"lower\", \"middle\", \"high\")]\n    data<-melt(temp)\n    n4 <- nPlot(\"grp\",\"value\", group=\"variable\", data, type=\"multiBarChart\")\n    n4$set(dom = \"socioEconomicPlot\")\n    n4$chart(forceY = c(300, 600), showControls = FALSE)  \n    n4$yAxis(tickFormat = \"#!  function(y) {return y.toFixed(0)} !#\")\n    return(n4)\n  })\n\n  \n})\n",
+    "created" : 1401782260552.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2298899874",
+    "id" : "DE568F63",
+    "lastKnownWriteTime" : 1402425843,
+    "path" : "~/R/tikhinuch-Dashboard/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
