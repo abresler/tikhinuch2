@@ -1,0 +1,18 @@
+body {
+	margin:1cm;
+	padding: 0;
+	font-size: 12px;
+}
+
+input, select, textarea {
+	font-size: 11px;
+}
+
+select {
+	width: 100%;
+}
+
+h3 {
+	
+}
+
