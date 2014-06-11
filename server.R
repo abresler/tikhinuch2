@@ -1,12 +1,15 @@
 library(shiny)
 library(datasets)
 library(reshape2)
+library(ggplot2)
+library(markdown)
 require(rCharts)
 
 shinyServer(function(input, output) {
   
   ##################### DataBase ####################
   pisa <- read.csv("data/PISA2012-10--06-2014.csv", head=TRUE, sep=",")
+  pisaContent <- read.csv("data/PISAcontent.csv", head=TRUE, sep=",")
   
   
   output$valueB <- renderPrint({ input$select }) 
@@ -54,5 +57,9 @@ shinyServer(function(input, output) {
     return(n4)
   })
 
-  
+
+  output$dataTable <- renderDataTable({    
+    pisa[, drop = FALSE]
+  })
+
 })
