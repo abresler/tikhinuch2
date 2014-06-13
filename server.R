@@ -7,30 +7,27 @@ require(rCharts)
 
 shinyServer(function(input, output) {
   
-  ##################### DataBase ####################
-  pisa <- read.csv("data/PISA2012-10--06-2014.csv", head=TRUE, sep=",")
-  pisaContent <- read.csv("data/PISAcontent.csv", head=TRUE, sep=",")
-  
-  
-  output$valueB <- renderPrint({ input$select }) 
-  output$valueC <- renderPrint({ input$checkGroup })
+  ##################### DataBase ##################
+  pisa <- read.csv("data/PISA2012-11--06-2014.csv", head=TRUE, sep=",")  
   
   ##################### Graphs ####################
-  
+  #output$valueB <- renderPrint({ input$selectSubject }) 
+  #output$valueC <- renderPrint({ input$checkGroup })
+
   output$meanPlot <- renderChart({ 
-      data <-pisa[pisa$sbj== input$select  & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "mean")]
-      n1 <- nPlot("grp", "mean", data, type="multiBarChart")
+    pisa <-pisa[pisa$sbj== input$selectSubject  & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "mean")]
+      n1 <- nPlot("grp", "mean", pisa, type="multiBarChart")
       n1$set(dom = "meanPlot", width=500)
-      n1$chart(forceY = c(300, 600), showControls = FALSE)
+      n1$chart(showControls = FALSE)
       n1$yAxis(tickFormat = "#!  function(y) {return y.toFixed(0)} !#")      
       return(n1)
                     
   })
             
   output$distributionPlot <- renderChart({ 
-    temp<-pisa[pisa$sbj==input$select & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "level1c", "level1b", "level1a", "level2", "level3", "level4", "level5", "level6")]
-    data<-melt(temp)
-    n2 <- nPlot("grp","value", group="variable", data, type="multiBarChart")
+    pisa<-pisa[pisa$sbj==input$selectSubject & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "level1c", "level1b", "level1a", "level2", "level3", "level4", "level5", "level6")]
+    pisa<-melt(pisa)
+    n2 <- nPlot("grp","value", group="variable", pisa, type="multiBarChart")
     n2$set(dom = "distributionPlot", width=500)
     n2$chart(stacked = TRUE)
     n2$yAxis(tickFormat = "#!  function(y) {return y.toFixed(0) + '%'} !#")
@@ -38,28 +35,46 @@ shinyServer(function(input, output) {
   })
   
   output$genderPlot <- renderChart({ 
-    temp<-pisa[pisa$sbj==input$select & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "men", "women")]
-    data<-melt(temp)
-    n3 <- nPlot("grp","value", group="variable", data, type="multiBarChart")
+    pisa<-pisa[pisa$sbj==input$selectSubject & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "men", "women")]
+    pisa<-melt(pisa)
+    n3 <- nPlot("grp","value", group="variable", pisa, type="multiBarChart")
     n3$set(dom = "genderPlot", width=500)
-    n3$chart(forceY = c(300, 600), showControls = FALSE)
+    n3$chart(showControls = FALSE)
     n3$yAxis(tickFormat = "#!  function(y) {return y.toFixed(0)} !#")
     return(n3)
   })
   
   output$socioEconomicPlot <- renderChart({ 
-    temp<-pisa[pisa$sbj==input$select & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "lower", "middle", "high")]
-    data<-melt(temp)
-    n4 <- nPlot("grp","value", group="variable", data, type="multiBarChart")
+    pisa<-pisa[pisa$sbj==input$selectSubject & pisa$year == 2012 & pisa$grp %in% c(input$checkGroup ), c("grp", "lower", "middle", "high")]
+    pisa<-melt(pisa)
+    n4 <- nPlot("grp","value", group="variable", pisa, type="multiBarChart")
     n4$set(dom = "socioEconomicPlot", width=500)
-    n4$chart(forceY = c(300, 600), showControls = FALSE)  
+    n4$chart(showControls = FALSE)  
     n4$yAxis(tickFormat = "#!  function(y) {return y.toFixed(0)} !#")
     return(n4)
   })
 
 
   output$dataTable <- renderDataTable({    
-    pisa[, drop = FALSE]
+    dataTable<-pisa[, input$show_vars, drop = FALSE]
+
+    if(input$selectTableYear != "All"){
+      dataTable<-dataTable[dataTable$year == input$selectTableYear, input$show_vars, drop = FALSE]
+
+    }
+
+    if(input$selectTableSubject != "All"){
+      dataTable<-dataTable[dataTable$sbj==input$selectTableSubject, input$show_vars, drop = FALSE]
+
+    }
+
+    if(input$selectTableGroup != "All"){
+      dataTable<-dataTable[dataTable$grp==input$selectTableGroup, input$show_vars, drop = FALSE]
+
+    }
+    
+    dataTable
+
   })
 
 })

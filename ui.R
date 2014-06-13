@@ -9,32 +9,47 @@ shinyUI(navbarPage(
         
     tags$head(tags$link(rel="stylesheet", type="text/css", href="style.css")),
 
-  div(class = "row", 
-    div(selectInput("select", label = "", 
-      choices = list("Math" = "Math", "Math Computer" = "MathCompExam", "Science" = "Science", "Reading" = "Reading", "Reading Digital"="ReadingDigital"), 
-      selected = "Math"), class = "span2"),
+  sidebarPanel( 
+    div(selectInput("selectSubject", label = "", 
+      choices =  unique(as.character(pisa$sbj)), 
+      selected = "Math")),
     div(checkboxGroupInput("checkGroup", label = "", 
-     choices = list("OECD" = "OECD", "Israel" = "Israel", "Hebrew" = "Hebrew", "Arabic" = "Arabic",
-      "Hebrew Official"= "HebrewOfficial", "Hebrew Religious"="HebrewReligious", "Hebrew Orthodox" = "HebrewOrthodox"), 
-     selected = list("Hebrew", "Arabic", "OECD", "Israel")), class = "span8")
-    ),
-div(width=12,
-  div(class = "row",
-    div(showOutput("meanPlot", "nvd3"), class = "span6"),
-    div(showOutput("distributionPlot", "nvd3"), class = "span6")
+     choices = unique(as.character(pisa$grp)), 
+     selected = list("Hebrew", "Arabic", "OECD", "Israel")))
     ),
 
-  div(class = "row", 
-   
-    div(showOutput("genderPlot", "nvd3"), class = "span6"),
-    div(showOutput("socioEconomicPlot", "nvd3"), class = "span6")
+  fluidRow(
+    column(4, tags$h5("Mean"), showOutput("meanPlot", "nvd3")),
+    column(4, tags$h5("Distribution"), showOutput("distributionPlot", "nvd3"))
+    ),
+
+  fluidRow(
+   column(3),
+    column(4, tags$h5("Gender"), showOutput("genderPlot", "nvd3")),
+    column(4, tags$h5("Socio-Economic"), showOutput("socioEconomicPlot", "nvd3"))
     )
-  )),
-  tabPanel("Data", 
-    dataTableOutput('dataTable')),
+  ),
+  tabPanel("Data",
+     sidebarPanel(
+     selectInput("selectTableYear", "Year:", c("All", unique(as.character(pisa$year)))), 
+     selectInput("selectTableSubject", "Subject:", c("All", unique(as.character(pisa$sbj)))), 
+     selectInput("selectTableGroup", "Group:", c("All", unique(as.character(pisa$grp)))), 
+
+  checkboxGroupInput("show_vars", label = "Columns in PISA to show:", 
+     choices = names(pisa), selected = list("year", "sbj", "topic", "grp", "mean", "men", "women"))),
+       mainPanel(dataTableOutput("dataTable"))
+
+  ),
+        tabPanel("Explore"
+          ),
   tabPanel("About",
-          includeMarkdown("about.html"))
+          includeMarkdown("www/about.html"))
+   
 
 
   )
+
 )
+        
+
+   
