@@ -1,5 +1,4 @@
-## Tik-Hinuch: Education Data Explorer using R and Shiny
-
+## Tik-Hinuch
 Education Data Explorers using [R](http://www.r-project.org/) and [Shiny](http://www.rstudio.com/shiny/).  
 
 ### Install 

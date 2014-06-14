@@ -1,4 +1,4 @@
-library(shiny)
+librarlibrary(shiny)
 library(ggplot2)
 library(markdown)
 require(rCharts)
@@ -36,11 +36,17 @@ shinyUI(navbarPage(
      selectInput("selectTableGroup", "Group:", c("All", unique(as.character(pisa$grp)))), 
 
   checkboxGroupInput("show_vars", label = "Columns in PISA to show:", 
-     choices = names(pisa), selected = list("year", "sbj", "topic", "grp", "mean", "men", "women"))),
+     choices = names(pisa), selected = list("year", "sbj", "topic", "grp", "mean", "men", "women"))
+ 
+  ),
+ 
+  
        mainPanel(dataTableOutput("dataTable"))
 
   ),
         tabPanel("Explore"
+                 
+                   
           ),
   tabPanel("About",
           includeMarkdown("www/about.html"))
