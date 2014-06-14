@@ -1,4 +1,4 @@
-librarlibrary(shiny)
+library(shiny)
 library(ggplot2)
 library(markdown)
 require(rCharts)
