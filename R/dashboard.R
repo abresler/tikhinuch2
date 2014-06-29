@@ -1,8 +1,6 @@
 output$dashboard <- renderUI({
 # sidebarLayout(fluid=TRUE,
   wellPanel(
-    tags$head(tags$link(rel="stylesheet", type="text/css", href="style.css")),
-    
     selectInput("selectSubject", label = "", 
      choices =  unique(as.character(pisa$sbj)), 
      selected = "Math"),  

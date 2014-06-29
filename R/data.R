@@ -6,8 +6,8 @@ output$data <- renderUI({
 			selectInput("selectTableSubject", "Subject", c("All", unique(as.character(pisa$sbj)))), 
 			selectInput("selectTableTopic", "Topic", c("All", unique(as.character(pisa$topic)))), 
 			selectInput("selectTableGroup", "Group", c("All", unique(as.character(pisa$grp)))), 
-   #checkboxGroupInput("show_vars", label = "Columns to show:", 
-    # choices = names(pisa), selected = list("year", "sbj", "topic", "grp", "mean", "men", "women")),
+
+   			# checkboxGroupInput("show_vars", label = "Columns to show:", choices = names(pisa), selected = list("year", "sbj", "topic", "grp", "mean", "men", "women")),
 
 			selectInput('show_vars', 'Columns to show', names(pisa), multiple=TRUE, selectize=FALSE, selected = list("year", "sbj", "topic", "grp", "mean", "men", "women"))
 			),
