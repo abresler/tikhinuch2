@@ -4,26 +4,26 @@ output$dashboard <- renderUI({
     tags$head(tags$link(rel="stylesheet", type="text/css", href="style.css")),
     
     selectInput("selectSubject", label = "", 
-                                   choices =  unique(as.character(pisa$sbj)), 
-                                   selected = "Math"),  
+     choices =  unique(as.character(pisa$sbj)), 
+     selected = "Math"),  
     
     uiOutput("selectTopic"),
     
-      checkboxGroupInput("checkGroup", label = "", inline=TRUE,
-                         choices = unique(as.character(pisa$grp)), 
-                         selected = list("Hebrew", "Arabic", "OECD", "Israel")),
+    checkboxGroupInput("checkGroup", label = "", inline=TRUE,
+     choices = unique(as.character(pisa$grp)), 
+     selected = list("Hebrew", "Arabic", "OECD", "Israel")),
+    
+    
+    div(class = "row", width=10,         
       
- 
-        div(class = "row", width=10,         
-            
-          div(showOutput("meanPlot", "nvd3"), class = "span5"),
-          div(showOutput("distributionPlot", "nvd3"), class = "span5")
-        )
-        ,
-       div(class="row", width=10, 
-          div(showOutput("genderPlot", "nvd3"), class = "span5"),
-          div(showOutput("socioEconomicPlot", "nvd3"), class = "span5")
-        
+      div(showOutput("meanPlot", "nvd3"), class = "span5"),
+      div(showOutput("distributionPlot", "nvd3"), class = "span5")
+      )
+    ,
+    div(class="row", width=10, 
+      div(showOutput("genderPlot", "nvd3"), class = "span5"),
+      div(showOutput("socioEconomicPlot", "nvd3"), class = "span5")
+      
       )
     )
 })
@@ -31,8 +31,8 @@ output$dashboard <- renderUI({
 
 output$selectTopic <- renderUI({
   selectInput("selectTopic", label = "", 
-              choices =  unique(as.character(pisa$topic[c(pisa$sbj==input$selectSubject)])), 
-              selected = "General")  
+    choices =  unique(as.character(pisa$topic[c(pisa$sbj==input$selectSubject)])), 
+    selected = "General")  
 })
 
 output$meanPlot <- renderChart({ 
@@ -44,7 +44,6 @@ output$meanPlot <- renderChart({
   n1$set(dom = "meanPlot", width=500, title="Mean")
   n1$chart(showControls = FALSE)
   n1$yAxis(tickFormat = "#!  function(y) {return y.toFixed(0)} !#", axisLabel = "PISA points", width=40)   
-  n1$xAxis(staggerLabels = TRUE)
   return(n1)
 })
 

@@ -4,7 +4,7 @@ output$data <- renderUI({
 		sidebarPanel(width=3,
 			selectInput("selectTableYear", "Year", c("All", unique(as.character(pisa$year)))), 
 			selectInput("selectTableSubject", "Subject", c("All", unique(as.character(pisa$sbj)))), 
-      selectInput("selectTableTopic", "Topic", c("All", unique(as.character(pisa$topic)))), 
+			selectInput("selectTableTopic", "Topic", c("All", unique(as.character(pisa$topic)))), 
 			selectInput("selectTableGroup", "Group", c("All", unique(as.character(pisa$grp)))), 
    #checkboxGroupInput("show_vars", label = "Columns to show:", 
     # choices = names(pisa), selected = list("year", "sbj", "topic", "grp", "mean", "men", "women")),
@@ -13,9 +13,9 @@ output$data <- renderUI({
 			),
 		mainPanel(wellPanel(
 			dataTableOutput("dataTable")
-      )
 			)
-	)
+		)
+		)
 })
 
 
@@ -29,16 +29,12 @@ output$dataTable <- renderDataTable({
 	}
 
 	if(input$selectTableSubject != "All"){
-    
-	  #choices =  unique(as.character(pisa$topic[c(pisa$sbj==input$selectSubject)])), 
-	  
-    
 		dataTable<-dataTable[dataTable$sbj==input$selectTableSubject, input$show_vars, drop = FALSE]
 	}
 
-    if(input$selectTableTopic != "All"){
-      dataTable<-dataTable[dataTable$topic==input$selectTableTopic, input$show_vars, drop = FALSE]
-    }
+	if(input$selectTableTopic != "All"){
+		dataTable<-dataTable[dataTable$topic==input$selectTableTopic, input$show_vars, drop = FALSE]
+	}
 
 	if(input$selectTableGroup != "All"){
 		dataTable<-dataTable[dataTable$grp==input$selectTableGroup, input$show_vars, drop = FALSE]
